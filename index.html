@@ -163,25 +163,26 @@
                 return;
             }
 
-            totalGuesses++;
-
             if (userGuess < 1 || userGuess > 100) {
                 result.textContent = "Your guess must be between 1 and 100.";
             } else if (userGuess < randomNumber) {
                 result.textContent = "Too low! Try again.";
             } else if (userGuess > randomNumber) {
-                result.textContent = "Too high! Try again.";
+                result.textContent = "Too high! Try again.";}
+              else if (Math.abs(userGuess - randomNumber)==10) {
+                result.textContent = "Near";
             } else {
-                result.textContent = "Correct! The number was " + randomNumber + ". Generating a new number...";
-                correctGuesses++;
-                randomNumber = Math.floor(Math.random() * 100) + 1;
+                localStorage.setItem('gameMessage', 'Keep rocking!!!!');
+              window.location.replace("next-page.html");
             }
+        }
+    
 
             updateScoreboard();
-        }
+        
 
         updateScoreboard();
-        window.location.replace("next-page.html");
+        window.location.place("next-page.html");
     </script>
 </body>
 </html>
