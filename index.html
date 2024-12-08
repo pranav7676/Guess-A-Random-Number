@@ -23,18 +23,13 @@
             border-radius: 15px;
             text-align: center;
             box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1.5s ease-in-out, rotate360 5s infinite linear;
-            transition: transform 0.3s ease;
+            animation: fadeIn 1.5s ease-in-out;
         }
-
-       
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-     
 
         h1 {
             margin-bottom: 20px;
@@ -75,6 +70,16 @@
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
         }
 
+        .scoreboard {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
         .animated-bg {
             position: absolute;
             top: 0;
@@ -106,25 +111,6 @@
             }
         }
 
-        .next-page {
-            font-family: 'Press Start 2P', cursive;
-            text-align: center;
-            color: white;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
-            margin-top: 20px;
-        }
-
-        .nature-animation {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #020024, #090979, #00d4ff);
-            overflow: hidden;
-        }
-
         .nature-animation div {
             position: absolute;
             border-radius: 50%;
@@ -152,10 +138,21 @@
         <input type="number" id="userGuess" placeholder="Enter your guess (1-100)" min="1" max="100">
         <button onclick="checkGuess()">Submit</button>
         <p class="result" id="result"></p>
+        <div class="scoreboard" id="scoreboard">
+            <p>Total Guesses: <span id="totalGuesses">0</span></p>
+            <p>Correct Guesses: <span id="correctGuesses">0</span></p>
+        </div>
     </div>
 
     <script>
-        const randomNumber = Math.floor(Math.random() * 100) + 1;
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        let totalGuesses = 0;
+        let correctGuesses = 0;
+
+        function updateScoreboard() {
+            document.getElementById('totalGuesses').textContent = totalGuesses;
+            document.getElementById('correctGuesses').textContent = correctGuesses;
+        }
 
         function checkGuess() {
             const userGuess = parseInt(document.getElementById('userGuess').value);
@@ -166,6 +163,8 @@
                 return;
             }
 
+            totalGuesses++;
+
             if (userGuess < 1 || userGuess > 100) {
                 result.textContent = "Your guess must be between 1 and 100.";
             } else if (userGuess < randomNumber) {
@@ -173,11 +172,16 @@
             } else if (userGuess > randomNumber) {
                 result.textContent = "Too high! Try again.";
             } else {
-                localStorage.setItem('gameMessage', 'Keep rocking!!!!');
-              window.location.replace("next-page.html");
+                result.textContent = "Correct! The number was " + randomNumber + ". Generating a new number...";
+                correctGuesses++;
+                randomNumber = Math.floor(Math.random() * 100) + 1;
             }
+
+            updateScoreboard();
         }
+
+        updateScoreboard();
+        window.location.replace("next-page.html");
     </script>
 </body>
-</html>
-
+</html>    
